@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prime-deploy
+  labels:
+    app: prime
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prime-app
+  template:
+    metadata:
+      labels:
+        app: prime-app
+    spec:
+      containers:
+      - name: prime-container
+        image: aallhndi/prime-app:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          requests:
+            cpu: 500m
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prime-svc
+  labels:
+    app: prime-app
+spec:
+  type: LoadBalancer 
+  ports:
+  - port: 5000
+  selector:
+    app: prime-app
